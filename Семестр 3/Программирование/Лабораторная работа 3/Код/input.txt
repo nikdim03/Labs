@@ -1,0 +1,21 @@
+  
+  unsigned  double    main( int *a,int b );  // sihjbjklslk
+
+void incorrectFunction1(int a,); // Incorrect parameter list structure
+void ihf(int a) // Missing semicolon
+void incorrectFunction2(int a float b); // Incorrect parameter list structure
+void 6func(int a, float b); // Incorrect name
+void incorrectFunction4(int a, float b, bool); // Incorrect parameter list structure
+void incorrectFunction5(int a, float b, bool c,); // Incorrect parameter list structure
+
+
+int correctFunction6(int a);
+int incorrectFunction7(int a, float b, bool c, int a); // Duplicate parameter name
+int incorrectFunction8(int a, float b, bool c, int d, char e,); // Comma
+int eyt(short a, float a);
+int kf(long a, float b);
+int fdjj(unsigned a, size_t b);
+int incorrectFunction13(signed a, float b); // Invalid parameter type
+int incorrectFunction14(int a, short double b); // Invalid parameter type
+
+float allGood(float b[i]);

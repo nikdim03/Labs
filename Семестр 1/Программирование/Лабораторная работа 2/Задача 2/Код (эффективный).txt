@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>// for abs() only
+
+int main()
+{
+    unsigned int i = 0, j, N;
+    unsigned short f = 0, asc = 0, des = 0;// instead of bool
+    int a[1000];
+
+    scanf_s("%u", &N);
+
+// input
+    while (i < N)
+    {
+        scanf_s("%d", &a[i]);
+        i++;
+    }
+
+    printf("%c", '\n');
+
+// 1,2|3|4
+    i = 0;
+    while (i < N)
+    {
+        j = i + 1;
+        while (j < N)
+        {
+            if (a[i] != a[j] && abs(a[i]) == abs(a[j])) f = 1;
+            if (a[i] < a[j]) asc = 1;
+            else if (a[i] > a[j]) des = 1;
+            j++;
+        }
+        i++;
+    }
+
+// output
+    if (f)
+        printf("%s", "There are opposite numbers in the array\n");
+    else
+        printf("%hu\n", 1);
+    if (asc && des || !asc && !des)
+        printf("%hu\n", 4);
+    else if (asc)
+        printf("%hu\n", 2);
+    else
+        printf("%hu", 3);
+
+    return 0;
+}

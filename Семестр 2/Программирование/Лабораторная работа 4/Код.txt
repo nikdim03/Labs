@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+
+int gcd(int a, int b)
+{
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+class Array
+{
+private:
+    int a[100], N;
+
+public:
+    Array(int NN) : N(NN) {}
+    void init(unsigned i, int x)
+    {
+        a[i] = x;
+    }
+    int findMax()
+    {
+        int max = a[0];
+        for (unsigned i = 0; i < N; i++)
+            if (a[i] > max)
+                max = a[i];
+        return max;
+    }
+    friend int operator*(Array const &, Array const &);
+};
+
+int operator*(Array &arr1, Array &arr2)
+{
+    return (arr1.findMax() / gcd(arr1.findMax(), arr2.findMax())) * arr2.findMax();
+}
+
+int main()
+{
+    unsigned M, N;
+    cin >> M >> N;
+    const unsigned Nc = N, Mc = M;
+    int matrix[Nc][Mc], a[Mc], max, min;
+    Array array(N);
+
+    // fill in array
+    for (unsigned i = 0; i < N; i++)
+        for (unsigned j = 0; j < M; j++)
+            cin >> matrix[i][j];
+
+    // initialize min with the 1st max
+    for (unsigned i = 0; i < N; i++)
+        array.init(i, matrix[i][0]);
+    min = array.findMax();
+
+    cout << "\nMaximums (by column):\n";
+    for (unsigned j = 0; j < M; j++)
+    {
+        for (unsigned i = 0; i < N; i++)
+            array.init(i, matrix[i][j]);
+        max = array.findMax();
+        cout << max << " ";
+        if (max < min)
+            min = max;
+    }
+    cout << "\n\nMinimum of maximums (by column):\n"
+         << min << endl;
+
+    // create 2 arrays for operator overloading
+    Array arr1(N), arr2(N);
+    // initialize the arrays
+    for (unsigned i = 0; i < N; i++)
+    {
+        arr1.init(i, matrix[i][0]);
+        arr1.findMax();
+        arr2.init(i, matrix[i][1]);
+        arr2.findMax();
+    }
+    cout << "\nLCM of max 1 and max 2:\n";
+    // operator overloading
+    int lcm = arr1 * arr2;
+    cout << lcm << endl;
+    return 0;
+}

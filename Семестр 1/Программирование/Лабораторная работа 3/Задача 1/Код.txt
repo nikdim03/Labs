@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+int main()
+{
+	unsigned int N, M, i, j, sum = 0, pMinI;// pozitive min index
+	int a[100][100], pMin = -1;// pozitive min
+
+	scanf_s("%u%u", &N, &M);
+
+// input
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++)
+			scanf_s("%d", &a[i][j]);
+
+// pMin initialization
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++)
+			if (a[i][j] > 0)
+			{
+				pMin = a[i][j];
+				break;
+				goto x;
+			}
+x:
+
+	if (pMin == -1)
+	{
+		printf("No pozitive numbers");
+		return 0;
+	}
+
+// find the column
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++)
+			if (a[i][j] > 0)
+				if (a[i][j] <= pMin)
+				{
+					pMin = a[i][j];
+					pMinI = j;
+				}
+
+// calculate
+	for (i = 0; i < N; i++)
+		sum += a[i][pMinI];
+
+	printf("%u", sum);
+
+	return 0;
+}

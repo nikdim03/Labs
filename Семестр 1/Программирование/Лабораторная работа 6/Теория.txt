@@ -1,0 +1,124 @@
+Пример 1
+
+// find sum and product of array elements
+#include <stdio.h>
+
+int main()
+{
+	int A[10], i, N, p, s;
+
+	scanf_s("%d", &N);
+
+	for (i = 0; i < N; i++)
+		scanf_s("%d", &A[i]);
+
+	s = 0;
+	p = 1;
+	for (i = 0; i < N; i++)
+	{
+		s += A[i];
+		p *= A[i];
+	}
+
+	printf("%d%d", s, p);
+
+	return 0;
+}
+
+
+Пример 2
+
+// find sum and product of array elements
+#include <stdio.h>
+
+int input(int N);
+void calculate(int N);
+void output();
+
+int A[10], i, p, s;
+
+int main()
+{
+	int N;
+
+	N = input(N);
+	calculate(N);
+	output();
+
+	return 0;
+}
+
+int input(int N)
+{
+	scanf_s("%d", &N);
+	for (i = 0; i < N; i++)
+		scanf_s("%d", &A[i]);
+
+	return N;
+}
+
+void calculate(int N)
+{
+	s = 0;
+	p = 1;
+	for (i = 0; i < N; i++)
+	{
+		s += A[i];
+		p *= A[i];
+	}
+}
+
+void output()
+{
+	printf("%d%d", s, p);
+}
+
+
+Пример 3
+
+// find sum and product of array elements
+#include <stdio.h>
+
+int input(int N, int* s, int* p);
+void calculate(int N, int* s, int* p);
+void output(int s, int p);
+
+int A[10];
+
+int main()
+{
+	int N, i, p, s;
+
+	N = input(N, &s, &p);
+	calculate(N, &s, &p);
+	output(s, p);
+
+	return 0;
+}
+
+int input(int N, int* s, int* p)
+{
+	int i;
+	scanf_s("%d", &N);
+	for (i = 0; i < N; i++)
+		scanf_s("%d", &A[i]);
+
+	return N;
+}
+
+void calculate(int N, int* s, int* p)
+{
+	int i;
+	s = 0;
+	p = 1;
+	for (i = 0; i < N; i++)
+	{
+		s += A[i];
+		p *= A[i];
+	}
+}
+
+void output(int s, int p)
+{
+	printf("%d%d", s, p);
+}

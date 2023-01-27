@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int isfloat(const char* str)
+{
+	char* ep = NULL;// end pointer
+	long i = strtol(str, &ep, 10);
+
+	if (!*ep)
+		return 0;// it's an int
+
+	if (*ep == 'e' || *ep == 'E' || *ep == '.')
+		return 1;// it's a double
+
+	return 0;// it's not a double, but there's more stuff after it
+}
+
+int main()
+{
+	double A, B, C;
+	int Ai, Bi, Ci;
+	char str[10000];
+
+// input
+	scanf_s("%lf%lf%lf", &A, &B, &C);
+
+
+// analysys
+	if (A + B > C)
+		B = (A + C) / 2;
+	else
+	{
+		if (A == C) printf("Can't find the min (A = C)");
+		else
+			if (A < C) B = A;
+			else B = C;
+		A = A * A;
+		C = C * C;
+	}
+
+// output
+	if (isDouble(gcvt(A, 6, str)))
+		printf("%lf, ", A);
+	else
+	{
+		Ai = A;
+		printf("%d, ", Ai);
+	}
+	if (isDouble(gcvt(B, 6, str)))
+		printf("%lf, ", B);
+	else
+	{
+		Bi = B;
+		printf("%d, ", Bi);
+	}
+	if (isDouble(gcvt(C, 6, str)))
+		printf("%lf", C);
+	else
+	{
+		Ci = C;
+		printf("%d", Ci);
+	}
+
+	return 0;
+}

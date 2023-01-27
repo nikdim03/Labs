@@ -1,0 +1,10 @@
+﻿  MyForm.cpp
+C:\Users\dmitriy\source\repos\laba2\laba2\MyForm.h(239,17): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dmitriy\source\repos\laba2\laba2\MyForm.h(240,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dmitriy\source\repos\laba2\laba2\MyForm.h(243,17): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dmitriy\source\repos\laba2\laba2\MyForm.h(244,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dmitriy\source\repos\laba2\laba2\MyForm.h(249,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dmitriy\source\repos\laba2\laba2\MyForm.h(253,17): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dmitriy\source\repos\laba2\laba2\MyForm.h(254,18): warning C4018: '<': signed/unsigned mismatch
+  MyForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  laba2.vcxproj -> C:\Users\dmitriy\source\repos\laba2\arm64\Debug\laba2.exe

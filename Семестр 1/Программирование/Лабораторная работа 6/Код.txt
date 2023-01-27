@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+void input(unsigned int* N, unsigned int* M, int a[10][10])
+{
+	unsigned int i, j;
+	scanf_s("%u%u", N, M);
+	for (i = 0; i < *N; i++)
+		for (j = 0; j < *M; j++)
+			scanf_s("%d", &a[i][j]);
+}
+
+void bubbleSort(unsigned int N, unsigned int M, int a[10][10])
+{
+	unsigned int i, j, k;
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++)
+			for (k = 0; k < M - j - 1; k++)
+				if (i % 2 != 0)// ascending
+				{
+					if (a[i][k] > a[i][k + 1])
+					{
+						// swap
+						a[i][k] += a[i][k + 1];
+						a[i][k + 1] = a[i][k] - a[i][k + 1];
+						a[i][k] -= a[i][k + 1];
+					}
+				}
+				else// descending
+					if (a[i][k] < a[i][k + 1])
+					{
+						// swap
+						a[i][k] += a[i][k + 1];
+						a[i][k + 1] = a[i][k] - a[i][k + 1];
+						a[i][k] -= a[i][k + 1];
+					}
+}
+
+void output(unsigned int N, unsigned int M, int a[10][10])
+{
+	unsigned int i, j;
+	printf("\n");
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < M; j++)
+			printf("%d ", a[i][j]);
+		printf("\n");
+	}
+}
+
+int main()
+{
+	unsigned int N, M;
+	int a[10][10];
+
+	input(&N, &M, a);
+	bubbleSort(N, M, a);
+	output(N, M, a);
+
+	return 0;
+}

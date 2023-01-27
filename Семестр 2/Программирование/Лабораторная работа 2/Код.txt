@@ -1,0 +1,533 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <wchar.h>
+#include <locale.h>
+#include <string.h>
+
+struct food
+{
+    char name[15];
+    char type[15];
+    char meal[15];
+    int calories;
+    char keto;
+};
+unsigned int currentLine = 0;
+
+void menu(struct food foodArr[10]);
+
+unsigned int isNumber(char str[])
+{
+    unsigned int i;
+    for (i = 0; str[i] != '\0'; i++)
+        if (isdigit(str[i]) == 0)
+            return 0;
+    return 1;
+}
+
+void swap(struct food *a, struct food *b)
+{
+    struct food temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void bubbleSort(struct food foodArr[10], char col, char asc)
+{
+    unsigned int i, j;
+    switch (asc)
+    {
+    case '1':
+        for (i = 0; i < currentLine - 1; i++)
+            for (j = 0; j < currentLine - i - 1; j++)
+                switch (col)
+                {
+                case '1':
+                    if (strcmp(foodArr[j].name, foodArr[j + 1].name) > 0)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                case '2':
+                    if (strcmp(foodArr[j].type, foodArr[j + 1].type) > 0)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                case '3':
+                    if (strcmp(foodArr[j].meal, foodArr[j + 1].meal) > 0)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                case '4':
+                    if (foodArr[j].calories > foodArr[j + 1].calories)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                case '5':
+                    if (foodArr[j].keto < foodArr[j + 1].keto)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                default:
+                    break;
+                }
+        break;
+    default:
+        for (i = 0; i < currentLine - 1; i++)
+            for (j = 0; j < currentLine - i - 1; j++)
+                switch (col)
+                {
+                case '1':
+                    if (strcmp(foodArr[j].name, foodArr[j + 1].name) < 0)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                case '2':
+                    if (strcmp(foodArr[j].type, foodArr[j + 1].type) < 0)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                case '3':
+                    if (strcmp(foodArr[j].meal, foodArr[j + 1].meal) < 0)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                case '4':
+                    if (foodArr[j].calories < foodArr[j + 1].calories)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                case '5':
+                    if (foodArr[j].keto > foodArr[j + 1].keto)
+                        swap(&foodArr[j], &foodArr[j + 1]);
+                    break;
+                default:
+                    break;
+                }
+        break;
+    }
+}
+
+void saveData(struct food foodArr[10])
+{
+    FILE *fp = fopen("data.dat", "wb");
+    fwrite(&currentLine, sizeof(int), 1, fp);              // write currentLine
+    fwrite(foodArr, sizeof(struct food), currentLine, fp); // write foodArr
+    fclose(fp);
+    printf("\nData has been stored successfully!\n\n");
+}
+
+void loadData(struct food foodArr[10])
+{
+    FILE *fp = fopen("data.dat", "rb");
+    unsigned int i;
+    struct food x;
+    fread(&currentLine, sizeof(int), 1, fp); // read currentLine
+    for (i = 0; i < currentLine; i++)        // read foodArr
+        fread(&foodArr[i], sizeof(struct food), 1, fp);
+    fclose(fp);
+    printf("\nData has been loaded successfully!\n\n");
+}
+
+void add(struct food foodArr[10])
+{
+    char str[15], newLine = 'y';
+    do
+    {
+        if (newLine != 'y')
+            printf("\nYou've typed in a wrong character! Please, try again.\n");
+        else
+        {
+            printf("\nName:\n");
+            scanf("%s", &foodArr[currentLine].name);
+            printf("\nType:\n");
+            scanf("%s", &foodArr[currentLine].type);
+            printf("\nMeal:\n");
+            scanf("%s", &foodArr[currentLine].meal);
+        a:
+            printf("\nCalories:\n");
+            scanf("%s", str);
+            if (!isNumber(str))
+            {
+                printf("\nInput a number!\n");
+                goto a;
+            }
+            else
+                foodArr[currentLine].calories = atoi(str);
+
+            do
+            {
+                printf("\nKeto-friendly? [y,n]\n");
+                // input character without pressing enter
+                system("stty raw");
+                foodArr[currentLine].keto = getchar();
+                if (foodArr[currentLine].keto == '\n')
+                    foodArr[currentLine].keto = getchar();
+                system("stty cooked");
+
+                if (foodArr[currentLine].keto != 'y' && foodArr[currentLine].keto != 'n')
+                    printf("\nYou've typed in a wrong character! Please, try again.\n");
+            } while (foodArr[currentLine].keto != 'y' && foodArr[currentLine].keto != 'n');
+            currentLine++;
+        }
+        printf("\nDo you want to add a new line? [y,n]\n");
+        // input character without pressing enter
+        system("stty raw");
+        newLine = getchar();
+        if (newLine == '\n')
+            newLine = getchar();
+        system("stty cooked");
+    } while (newLine != 'n');
+    saveData(foodArr);
+    printf("\nDONE!----------------------------------------------------------------------\n\n\n");
+    menu(foodArr);
+}
+
+void output(struct food foodArr[10])
+{
+    unsigned int i;
+    // open table -------------------------------------------------------------------------------------------
+    setlocale(LC_ALL, "en_US.UTF-8");                                        // set C locale to UTF-8 (to enable Unicode characters)
+    wchar_t c1 = 0x256D, c2 = 0x256E, c3 = 0x256F, c4 = 0x2570;              // corners (clockwise)
+    wchar_t s1 = 0x252C, s2 = 0x253C, s3 = 0x2524, s4 = 0x2534, s5 = 0x251C; // separators (clockwise)
+    wchar_t h = 0x2500, v = 0x2502;                                          // horizontal line, vertical line
+
+    wprintf(L"%lc", c1);
+    for (i = 0; i < 55; i++)
+        if (i == 3 || i == 14 || i == 23 || i == 32 || i == 41)
+            wprintf(L"%lc", s1);
+        else
+            wprintf(L"%lc", h);
+    wprintf(L"%lc\n", c2);
+
+    wprintf(L"%lc # %lc   Name   %lc  Type  %lc  Meal  %lcCalories%lcKeto-Friendly%lc\n", v, v, v, v, v, v, v);
+
+    wprintf(L"%lc", s5);
+    for (i = 0; i < 55; i++)
+        if (i == 3 || i == 14 || i == 23 || i == 32 || i == 41)
+            wprintf(L"%lc", s2);
+        else
+            wprintf(L"%lc", h);
+    wprintf(L"%lc\n", s3);
+    // ------------------------------------------------------------------------------------------------------
+
+    // fill in data
+    if (currentLine != 0)
+    {
+        for (i = 0; i < currentLine; i++)
+            wprintf(L"%lc%3u%lc%10s%lc%8s%lc%8s%lc%8d%lc%13s%lc\n", v, i + 1, v, foodArr[i].name, v, foodArr[i].type, v, foodArr[i].meal, v, foodArr[i].calories, v, foodArr[i].keto == 'y' ? "true" : "false", v);
+    }
+
+    // close table
+    wprintf(L"%lc", c4);
+    for (i = 0; i < 55; i++)
+        if (i == 3 || i == 14 || i == 23 || i == 32 || i == 41)
+            wprintf(L"%lc", s4);
+        else
+            wprintf(L"%lc", h);
+    wprintf(L"%lc\n", c3);
+
+    printf("\nDONE!----------------------------------------------------------------------\n\n\n");
+    menu(foodArr);
+}
+
+void input(struct food foodArr[10])
+{
+    currentLine = 0;
+    add(foodArr);
+}
+
+void find(struct food foodArr[10])
+{
+    char str[15], col;
+    unsigned int i, j, k;
+    if (currentLine > 2)
+    {
+    b:
+        printf("Which criteria do you want to find elements by?\n\nName(press 1)    Meal(press 3)     Keto-Friendly(press 5)\nType(press 2)    Calories(press 4)\n\n");
+
+        // input without pressing enter
+        system("stty raw");
+        col = getchar();
+        if (col == '\n')
+            col = getchar();
+        system("stty cooked");
+        if (col != '1' && col != '2' && col != '3' && col != '4' && col != '5')
+        {
+            printf("\nYou've typed in a wrong character! Please, try again.\n\n");
+            goto b;
+        }
+    c:
+        printf("Which items do you want to find?\n\n");
+        scanf("%s", str);
+
+        if (col == '4' && !isNumber(str))
+        {
+            printf("\nInput a number!\n\n");
+            goto c;
+        }
+        else if (col == '5' && strcasecmp(str, "true") != 0 && strcasecmp(str, "false") != 0)
+        {
+            printf("\nInput a boolean value (true or false)!\n\n");
+            goto c;
+        }
+
+        k = 0;
+        for (i = 0; i <= currentLine + 1; i++)
+        {
+            switch (col)
+            {
+            case '1':
+                if (strcasecmp(str, foodArr[k].name) != 0)
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            case '2':
+                if (strcasecmp(str, foodArr[k].type) != 0)
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            case '3':
+                if (strcasecmp(str, foodArr[k].meal) != 0)
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            case '4':
+                if (atoi(str) != foodArr[k].calories)
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            case '5':
+                if (strcasecmp(str, "true") == 0 && foodArr[k].keto != 'y' || strcasecmp(str, "true") != 0 && foodArr[k].keto == 'y')
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            default:
+                break;
+            }
+        }
+        printf("\nDONE!----------------------------------------------------------------------\n\n\n");
+    }
+    else
+        printf("\nAdd more rows!\n\n");
+    menu(foodArr);
+}
+
+void remove(struct food foodArr[10])
+{
+    char str[15], col;
+    unsigned int i, j, k;
+    if (currentLine > 0)
+    {
+    d:
+        printf("Which criteria do you want to remove elements by?\n\nName(press 1)    Meal(press 3)     Keto-Friendly(press 5)\nType(press 2)    Calories(press 4)\n\n");
+
+        // input without pressing enter
+        system("stty raw");
+        col = getchar();
+        if (col == '\n')
+            col = getchar();
+        system("stty cooked");
+        if (col != '1' && col != '2' && col != '3' && col != '4' && col != '5')
+        {
+            printf("\nYou've typed in a wrong character! Please, try again.\n\n");
+            goto d;
+        }
+    e:
+        printf("Which items do you want to remove?\n\n");
+        scanf("%s", str);
+        if (col == '4' && !isNumber(str))
+        {
+            printf("\nInput a number!\n\n");
+            goto e;
+        }
+        else if (col == '5' && strcasecmp(str, "true") != 0 && strcasecmp(str, "false") != 0)
+        {
+            printf("\nInput a boolean value (true or false)!\n\n");
+            goto e;
+        }
+
+        k = 0;
+        for (i = 0; i <= currentLine + 1; i++)
+        {
+            switch (col)
+            {
+            case '1':
+                if (strcasecmp(str, foodArr[k].name) == 0)
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            case '2':
+                if (strcasecmp(str, foodArr[k].type) == 0)
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            case '3':
+                if (strcasecmp(str, foodArr[k].meal) == 0)
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            case '4':
+                if (atoi(str) == foodArr[k].calories)
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            case '5':
+                if (strcasecmp(str, "true") == 0 && foodArr[k].keto == 'y' || strcasecmp(str, "true") != 0 && foodArr[k].keto == 'n')
+                {
+                    for (j = k; j < currentLine; j++)
+                        foodArr[j] = foodArr[j + 1];
+                    currentLine--;
+                }
+                else
+                    k++;
+                break;
+            default:
+                break;
+            }
+        }
+        printf("\nDONE!----------------------------------------------------------------------\n\n\n");
+    }
+    else
+        printf("\nThe table is empty\n\n");
+    menu(foodArr);
+}
+
+void sort(struct food foodArr[10])
+{
+    char str[15], col, asc;
+    if (currentLine > 0)
+    {
+    f:
+        printf("Which criteria do you want to sort the elements by?\n\nName(press 1)    Meal(press 3)     Keto-Friendly(press 5)\nType(press 2)    Calories(press 4)\n\n");
+        // input without pressing enter
+        system("stty raw");
+        col = getchar();
+        if (col == '\n')
+            col = getchar();
+        system("stty cooked");
+
+        if (col != '1' && col != '2' && col != '3' && col != '4' && col != '5')
+        {
+            printf("\nYou've typed in a wrong character! Please, try again.\n\n");
+            goto f;
+        }
+
+    g:
+        printf("Choose the order:\nAscending(press 1)    Descending(press 2)\n\n");
+        // input without pressing enter
+        system("stty raw");
+        asc = getchar();
+        if (asc == '\n')
+            asc = getchar();
+        system("stty cooked");
+
+        if (asc != '1' && asc != '2')
+        {
+            printf("\nYou've typed in a wrong character! Please, try again.\n\n");
+            goto g;
+        }
+
+        bubbleSort(foodArr, col, asc);
+
+        printf("\nDONE!----------------------------------------------------------------------\n\n\n");
+    }
+    else
+        printf("\nCan't sort an empty table!\n\n");
+    menu(foodArr);
+}
+
+int main()
+{
+    struct food foodArr[10];
+    loadData(foodArr);
+    menu(foodArr);
+    return 0;
+}
+
+void menu(struct food foodArr[10])
+{
+    char action;
+    printf("What do you want?\n\nInput(press 1)     Add(press 3)     Remove(press 5)    Save(press 7)\nOutput(press 2)    Find(press 4)    Sort(press 6)      Exit(press 8)\n\n");
+
+    // input without pressing enter
+    system("stty raw");
+    action = getchar();
+    if (action == '\n')
+        action = getchar();
+    system("stty cooked");
+
+    switch (action)
+    {
+    case '1':
+        printf("\nINPUT----------------------------------------------------------------------\n\n");
+        input(foodArr);
+        break;
+    case '2':
+        printf("\nOUTPUT----------------------------------------------------------------------\n\n");
+        output(foodArr);
+        break;
+    case '3':
+        printf("\nADD----------------------------------------------------------------------\n\n");
+        add(foodArr);
+        break;
+    case '4':
+        printf("\nSEARCH----------------------------------------------------------------------\n\n");
+        find(foodArr);
+        break;
+    case '5':
+        printf("\nREMOVE----------------------------------------------------------------------\n\n");
+        remove(foodArr);
+        break;
+    case '6':
+        printf("\nSORT----------------------------------------------------------------------\n\n");
+        sort(foodArr);
+        break;
+    case '7':
+        saveData(foodArr);
+        menu(foodArr);
+        break;
+    case '8':
+        printf("\nEXIT----------------------------------------------------------------------\n");
+        break;
+    default:
+        printf("\nYou've typed in a wrong character! Please, try again.\n\n");
+        menu(foodArr);
+        break;
+    }
+}

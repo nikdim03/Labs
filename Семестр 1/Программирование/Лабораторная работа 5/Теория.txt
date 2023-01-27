@@ -1,0 +1,62 @@
+Пример 1
+
+// output square table (1-100)
+#include <stdio.h>
+
+// fprintf(), fscanf()
+
+int main()
+{
+	int N;
+	FILE* fp;// file pointer
+	fopen_s(&fp, "file.txt", "w");// w - write, r - read, a - add
+
+	if (fp == NULL)
+		printf('0');
+
+	for (N = 0; N < 100; N++)
+		fprintf(fp, "%d - %d\n", N, N * N);
+
+	fclose(fp);
+	return 0;
+}
+
+
+Пример 2
+
+// replace '.' with "..."
+#include <stdio.h>
+
+//fgetc() reads a symbol from a file and returns its code
+//fputc() inputs a symbol, code of which is located in variable, in file
+
+int main()
+{
+	FILE* fp1, * fp2;
+	char s1[20], s2[20], c;
+
+	printf("Otkuda chitaem?\n");
+	scanf_s("%s", s1, 20);
+
+	printf("Kuda pishem?\n");
+	scanf_s("%s", s2, 20);
+
+	fopen_s(&fp1, s1, "r");
+	fopen_s(&fp2, s2, "w");
+
+	c = fgetc(fp1);
+	while (c != EOF)
+	{
+		if (c == '.')
+		{
+			fputc(c, fp2);
+			fputc(c, fp2);
+		}
+		fputc(c, fp2);
+		c = fgetc(fp1);
+	}
+
+	fclose(fp1);
+	fclose(fp2);
+	return 0;
+}

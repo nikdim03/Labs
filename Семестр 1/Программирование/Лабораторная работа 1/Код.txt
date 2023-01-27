@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main()
+{
+	double A, B, C;
+
+// input
+	scanf_s("%lf%lf%lf", &A, &B, &C);
+
+
+// analysys
+	if (A + B > C)
+		B = (A + C) / 2;
+	else
+	{
+		if (A == C)
+		{
+			printf("Can't find the min (A = C)");
+			return 0;
+		}
+		else
+			if (A < C) B = A;
+			else B = C;
+		A = A * A;
+		C = C * C;
+	}
+
+// output
+	printf("%lf, %lf, %lf", A, B, C);
+
+	return 0;
+}

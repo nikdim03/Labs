@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+int main()
+{
+	char c;
+	unsigned int k = 0;
+
+	while ((c = getchar()) != EOF)
+	{
+		if (k == 5)
+		{
+			printf("Yes");
+			return 0;
+		}
+		else
+		{
+			if (c == 'a')
+				k++;
+			else
+				k = 0;
+		}
+	}
+	printf("No");
+
+	return 0;
+}

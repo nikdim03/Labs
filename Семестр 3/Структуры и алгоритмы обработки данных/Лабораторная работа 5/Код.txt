@@ -1,0 +1,228 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void swap(int* a, int* b) {
+  int temp;
+  temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
+void print_array(int a[100], int n) {
+  for (int i = 0; i < n; i++) printf("%d ", a[i]);
+  printf("\n");
+}
+
+void enhanced_bubble_sort(int* a, int n) {
+  int* a_copy = a;
+  int* i = a + n - 1;
+  int f = 1, k;
+  while (a_copy != i) {
+    if (f == 0) break;
+    f = 0;
+    for (i = a + n - 1; i != a_copy; i--) {
+      if (*i < *(i - 1)) {
+        k = *(i - 1);
+        *(i - 1) = *i;
+        *i = k;
+        f = 1;
+        print_array(a, n);
+      }
+    }
+    a_copy++;
+  }
+}
+
+void bubble_sort(int* a, int n) {
+  int i, j;
+  for (i = 0; i < n; i++)
+    for (j = n - 1; j > i; j--)
+      if (a[j - 1] > a[j]) {
+        swap(&a[j - 1], &a[j]);
+        print_array(a, n);
+      }
+}
+
+void selection_sort(int* a, int n) {
+  int i, j, min;
+  for (i = 0; i < n; i++) {
+    min = i;
+    for (j = i + 1; j < n; j++)
+      if (a[j] < a[min]) min = j;
+    swap(&a[i], &a[min]);
+    print_array(a, n);
+  }
+}
+
+void insertion_sort(int* a, int n) {
+  int i, j, k = 0;
+  for (i = 0; i < n; i++) {
+    k = a[i];
+    for (j = i - 1; j >= 0 && a[j] > k; j--) {
+      a[j + 1] = a[j];
+      print_array(a, n);
+    }
+    a[j + 1] = k;
+    print_array(a, n);
+  }
+}
+
+int binary_search(int* a, int item, int low, int high) {
+  if (high <= low) return (item > a[low]) ? (low + 1) : low;
+  int mid = (low + high) / 2;
+  if (item == a[mid]) return mid + 1;
+  if (item > a[mid]) return binary_search(a, item, mid + 1, high);
+  return binary_search(a, item, low, mid - 1);
+}
+
+void binary_insertion_sort(int* a, int n) {
+  int i, j, loc, selected;
+  for (i = 1; i < n; i++) {
+    j = i - 1;
+    selected = a[i];
+    // find location where selected should be inseretd
+    loc = binary_search(a, selected, 0, j);
+    // Move all elements after location to create space
+    while (j >= loc) {
+      a[j + 1] = a[j];
+      j--;
+    }
+    a[j + 1] = selected;
+    print_array(a, n);
+  }
+}
+
+void shaker_sort(int* a, int n) {
+  int i, j;
+  for (i = 1; i <= n / 2; i++) {
+    for (j = i - 1; j < n - i; j++)
+      if (a[j] > a[j + 1]) {
+        swap(&a[j], &a[j + 1]);
+        print_array(a, n);
+      }
+    for (j = n - i - 1; j >= i; j--)
+      if (a[j] < a[j - 1]) {
+        swap(&a[j], &a[j - 1]);
+        print_array(a, n);
+      }
+  }
+}
+
+void quick_sort(int a[100], int first, int last) {
+  int i, j, pivot;
+  int n = last + 1;
+  if (first < last) {
+    pivot = first;
+    i = first;
+    j = last;
+    while (i < j) {
+      while (a[i] <= a[pivot] && i < last) i++;
+      while (a[j] > a[pivot]) j--;
+      if (i < j) {
+        swap(&a[i], &a[j]);
+        print_array(a, n);
+      }
+    }
+    swap(&a[pivot], &a[j]);
+    print_array(a, n);
+    quick_sort(a, 0, j - 1);
+    quick_sort(a, j + 1, last);
+  }
+}
+
+void shell_sort(int* a, int n) {
+  // Rearrange elements at each n/2, n/4, n/8, ... intervals
+  for (int interval = n / 2; interval > 0; interval /= 2) {
+    for (int i = interval; i < n; i += 1) {
+      int temp = a[i];
+      int j;
+      for (j = i; j >= interval && a[j - interval] > temp; j -= interval) {
+        a[j] = a[j - interval];
+      }
+      a[j] = temp;
+      print_array(a, n);
+    }
+  }
+}
+
+int main() {
+  system("clear");
+  printf("Введите размер массива:\n");
+  int N;
+  scanf("%d", &N);
+  const int n = N;
+  system("clear");
+  int a[n], i, a_copy[n], choice, f = 0;
+  printf("Введите массив:\n");
+  for (i = 0; i < n; i++) scanf("%d", &a[i]);
+  for (i = 0; i < n; i++) a_copy[i] = a[i];
+  system("clear");
+  while (1) {
+    if (!f) {
+      system("clear");
+      system("clear");
+      f = 1;
+    }
+    print_array(a, n);
+    printf("1.Сортировка пузырьком\n");
+    printf("2.Сортировка выбором\n");
+    printf("3.Сортировка вставкой\n");
+    printf("4.Сортировка бинарной вставкой\n");
+    printf("5.Сортировка шейкером\n");
+    printf("6.Быстрая сортировка\n");
+    printf("7.Сортировка shell\n");
+    printf("8.Вернуть предыдущее значение массива\n");
+    printf("9.Выход\n");
+    printf("Ваш выбор:\n");
+    scanf("%d", &choice);
+    switch (choice) {
+      case 1:
+        system("clear");
+        enhanced_bubble_sort(a, n);
+        printf("Массив отсортирован\n");
+        break;
+      case 2:
+        system("clear");
+        selection_sort(a, n);
+        printf("Массив отсортирован\n");
+        break;
+      case 3:
+        system("clear");
+        insertion_sort(a, n);
+        printf("Массив отсортирован\n");
+        break;
+      case 4:
+        system("clear");
+        binary_insertion_sort(a, n);
+        printf("Массив отсортирован\n");
+        break;
+      case 5:
+        system("clear");
+        shaker_sort(a, n);
+        printf("Массив отсортирован\n");
+        break;
+      case 6:
+        system("clear");
+        quick_sort(a, 0, n - 1);
+        printf("Массив отсортирован\n");
+        break;
+      case 7:
+        system("clear");
+        shell_sort(a, n);
+        printf("Массив отсортирован\n");
+        break;
+      case 8:
+        system("clear");
+        for (i = 0; i < n; i++) a[i] = a_copy[i];
+        break;
+      case 9:
+        exit(0);
+        break;
+      default:
+        system("clear");
+        printf("Wrong input\n");
+        break;
+    }
+  }
+  return 0;
+}

@@ -1,0 +1,41 @@
+Пример 1
+
+// output symbol codes
+#include <stdio.h>
+
+int main()
+{
+	unsigned int i;
+	for (i = 0; i < 255; i++)
+	{
+		printf("%c - %d\n", i, i);
+	}
+	return 0;
+}
+
+
+Пример 2
+
+// replace '.' with "..."
+#include <stdio.h>
+
+//EOF (End of File) (ctrl + z) is a symbol that appears after the last symbol of a file at the moment of saving
+//getchar() reads symbols from the standard input and returns it
+//putchar() returns symbol, the code of which is located in the variable
+
+int main()
+{
+	char c = getchar();
+	while (c != EOF)
+	{
+		if (c == '.')
+		{
+			putchar(c);
+			putchar(c);
+		}
+		putchar(c);
+		c = getchar();
+	}
+
+	return 0;
+}

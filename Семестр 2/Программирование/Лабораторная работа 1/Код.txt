@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <wchar.h>
+#include <locale.h>
+
+struct Data
+{
+	unsigned int x, y, r;
+};
+
+unsigned int abs(int a)
+{
+	if (a >= 0)
+		return a;
+	else
+		return -a;
+}
+
+unsigned int findMinDif(int selected[100], unsigned int k)
+{
+	unsigned int i, j, minDif = selected[0];
+
+	// initialize
+	minDif = abs(selected[0] - selected[1]);
+
+	// find
+	for (i = 0; i < k; i++)
+		for (j = i + 1; j < k; j++)
+			if (abs(selected[i] - selected[j]) < minDif)
+				minDif = abs(selected[i] - selected[j]);
+
+	return minDif;
+}
+
+struct Data *process(int a[10][10], unsigned int N, unsigned int M)
+{
+	int i, j;
+	unsigned int x, y, n = 0;
+	static struct Data myData[10];
+
+	for (x = 0; x < N; x++)
+	{
+		for (y = 0; y < M; y++)
+		{
+			unsigned int k = 0, r;
+			int selected[100];
+
+			selected[k] = a[x][y], k++;
+
+			for (i = x - 1; i >= 0; i--)
+				selected[k] = a[i][y], k++;
+
+			for (j = y + 1; j < M; j++)
+				selected[k] = a[x][j], k++;
+
+			i = x + 1;
+			j = y - 1;
+			while (i < N && j >= 0)
+			{
+				selected[k] = a[i][j], k++;
+				i++, j--;
+			}
+
+			r = findMinDif(selected, k);
+
+			myData[n].x = x;
+			myData[n].y = y;
+			myData[n].r = r;
+			n++;
+		}
+	}
+	return myData;
+}
+
+int main()
+{
+	unsigned int N, M, i, j;
+	int a[10][10];
+	struct Data *myData;
+
+	scanf("%u %u", &M, &N);
+
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++)
+			scanf("%d", &a[i][j]);
+
+	myData = process(a, N, M);
+
+	// open table -------------------------------------------------------------------------------------------
+	setlocale(LC_ALL, "en_US.UTF-8");										 // set C locale to UTF-8 (to enable Unicode characters)
+	wchar_t c1 = 0x256D, c2 = 0x256E, c3 = 0x256F, c4 = 0x2570;				 // corners (clockwise)
+	wchar_t s1 = 0x252C, s2 = 0x253C, s3 = 0x2524, s4 = 0x2534, s5 = 0x251C; // separators (clockwise)
+	wchar_t h = 0x2500, v = 0x2502;											 // horizontal line, vertical line
+
+	wprintf(L"%lc", c1);
+	for (i = 0; i < 19; i++)
+		if (i == 4 || i == 9 || i == 14)
+			wprintf(L"%lc", s1);
+		else
+			wprintf(L"%lc", h);
+	wprintf(L"%lc\n", c2);
+
+	wprintf(L"%lc  # %lc  𝕚 %lc  𝕛 %lc 𝕣𝕖𝕤%lc\n", v, v, v, v, v);
+
+	wprintf(L"%lc", s5);
+	for (i = 0; i < 19; i++)
+		if (i == 4 || i == 9 || i == 14)
+			wprintf(L"%lc", s2);
+		else
+			wprintf(L"%lc", h);
+	wprintf(L"%lc\n", s3);
+	// ------------------------------------------------------------------------------------------------------
+
+	// fill in data
+	for (i = 0; i < N * M; i++)
+		wprintf(L"%lc%4u%lc%4u%lc%4u%lc%4u%lc\n", v, i + 1, v, (myData + i)->x, v, (myData + i)->y, v, (myData + i)->r, v);
+
+	// close table
+	wprintf(L"%lc", c4);
+	for (i = 0; i < 19; i++)
+		if (i == 4 || i == 9 || i == 14)
+			wprintf(L"%lc", s4);
+		else
+			wprintf(L"%lc", h);
+	wprintf(L"%lc\n", c3);
+
+	return 0;
+}

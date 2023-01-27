@@ -1,0 +1,316 @@
+;===[ Начало сегмента кода ]=========================================================================
+MYCODE: segment .code
+org 100h; Обязательная директива для COM-файлов
+START:;---[ Точка старта ]---------------------------------------------------------------------------
+
+
+
+    call no24
+    ;call no25
+    ;call no26
+    ;call no27
+    ;call no28
+    ;call no29
+    ;call no30
+    ;call no31
+
+
+
+;---[ Стандартное завершение программы ]-------------------------------------------------------------
+    mov AX, 4C00h
+    int 21h
+
+
+
+
+;---[ Начало подпрограммы ]--------------------------------------------------------------------------
+no24:
+    mov SI, 0
+    mov word [SI], "[="
+    add SI, 2
+    mov word [SI], "=="
+    add SI, 2
+    mov word [SI], "NI"
+    add SI, 2
+    mov word [SI], "KU"
+    add SI, 2
+    mov word [SI], "LI"
+    add SI, 2
+    mov word [SI], "N "
+    add SI, 2
+    mov word [SI], "DM"
+    add SI, 2
+    mov word [SI], "IT"
+    add SI, 2
+    mov word [SI], "RI"
+    add SI, 2
+    mov word [SI], "Y="
+    add SI, 2
+    mov word [SI], "=="
+    add SI, 2
+    mov byte [SI], "]"
+    add SI, 1
+ret
+;---[ Конец подпрограммы ]---------------------------------------------------------------------------
+
+
+
+;---[ Начало подпрограммы ]--------------------------------------------------------------------------
+no25:
+    mov BX, 0012h
+    mov CX, BX
+    mov SI, 0
+    m1:
+        mov byte [SI], "#"
+        add SI, 1
+    loop m1
+ret
+;---[ Конец подпрограммы ]---------------------------------------------------------------------------
+
+
+
+
+;---[ Начало подпрограммы ]--------------------------------------------------------------------------
+no26:
+    mov BX, 0508h
+    mov CX, BX
+    and CX, 00FFh
+    shr BX, 8
+    mov SI, 0
+    m3:
+        mov byte [SI], " "
+        add SI, 1
+    loop m3
+    mov CX, BX
+    m2:
+        mov byte [SI], "#"
+        add SI, 1
+    loop m2
+ret
+;---[ Конец подпрограммы ]---------------------------------------------------------------------------
+
+
+
+
+;---[ Начало подпрограммы ]--------------------------------------------------------------------------
+no27:
+    mov DX, 0
+    mov SI, 3
+    mov byte [SI], "["
+    inc SI
+    mov word [SI], "PR"
+    add SI, 2
+    mov word [SI], "IV"
+    add SI, 2
+    mov word [SI], "ET"
+    add SI, 2
+    mov byte [SI], "]"
+    mov SI, 4
+    m7:
+    cmp byte[SI], "]"
+    jnz m5
+    jz m6
+
+    m5:
+    inc SI
+    inc DX
+    jmp m7
+
+    m6:
+ret
+;---[ Конец подпрограммы ]---------------------------------------------------------------------------
+
+
+
+
+;---[ Начало подпрограммы ]--------------------------------------------------------------------------
+no28:
+    mov DX, 0
+    mov SI, 3
+    mov byte [SI], "["
+    inc SI
+    mov word [SI], "PR"
+    add SI, 2
+    mov word [SI], "IV"
+    add SI, 2
+    mov word [SI], "ET"
+    add SI, 2
+    mov byte [SI], "]"
+
+
+    mov SI, 0
+    m9:
+    cmp byte[SI], "["
+    jnz m8
+    jz m10
+    m8:
+    inc SI
+    jmp m9
+    m10:
+    inc SI
+    m13:
+    cmp byte[SI], "]"
+    jnz m11
+    jz m12
+    m11:
+    mov byte[SI], "#"
+    inc SI
+    jmp m13
+    m12:
+ret
+;---[ Конец подпрограммы ]---------------------------------------------------------------------------
+
+
+
+
+;---[ Начало подпрограммы ]--------------------------------------------------------------------------
+no29:
+    mov DX, 0
+    mov SI, 6
+    mov byte [SI], "["
+    inc SI
+    mov word [SI], "PR"
+    add SI, 2
+    mov word [SI], "IV"
+    add SI, 2
+    mov word [SI], "ET"
+    add SI, 2
+    mov byte [SI], "]"
+
+    mov SI, 0
+    m14:
+    cmp byte[SI], "["
+    jz m15
+    jnz m16
+    m16:
+    mov byte[SI], "#"
+    inc SI
+    jmp m14
+    m15:
+    inc SI
+    m22:
+    cmp byte[SI], "]"
+    jnz m17
+    jz m18
+    m18:
+    inc SI
+    m21:
+    cmp SI, 32
+    jnz m19
+    jz m20
+    m19:
+    mov byte[SI], "#"
+    inc SI
+    jmp m21
+    m17:
+    inc SI
+    jmp m22
+    m20:
+ret
+;---[ Конец подпрограммы ]---------------------------------------------------------------------------
+
+
+
+
+;---[ Начало подпрограммы ]--------------------------------------------------------------------------
+no30:
+    mov DX, 0
+    mov SI, 6
+    mov byte [SI], "["
+    inc SI
+    mov word [SI], "PR"
+    add SI, 2
+    mov word [SI], "IV"
+    add SI, 2
+    mov word [SI], "ET"
+    add SI, 2
+    mov byte [SI], "]"
+
+    mov SI, 0
+    m14m:
+    cmp byte[SI], "["
+    jz m15m
+    jnz m16m
+    m16m:
+    mov byte[SI], "#"
+    inc SI
+    jmp m14m
+    m15m:
+    inc SI
+    m22m:
+    cmp byte[SI], "]"
+    jnz m17m
+    jz m18m
+    m18m:
+    inc SI
+    m21m:
+    cmp SI, 48
+    jnz m19m
+    jz m20m
+    m19m:
+    mov byte[SI], "#"
+    inc SI
+    jmp m21m
+    m17m:
+    inc SI
+    jmp m22m
+    m20m:
+
+    mov SI, 0
+    m3m:
+    cmp byte[SI], "#"
+    jz m1m
+    jnz m2m
+    m1m:
+    inc SI
+    jmp m3m
+    m2m:
+    cmp byte[SI], "#"
+    jz m4
+    jnz m5m
+
+    m5m:
+    mov AH, byte[SI]
+    mov byte[SI+34], AH
+    inc SI
+    jmp m2m
+    m4:
+ret
+;---[ Конец подпрограммы ]---------------------------------------------------------------------------
+
+
+
+
+;---[ Начало подпрограммы ]--------------------------------------------------------------------------
+no31:
+    mov DX, 0
+    mov SI, 3
+    mov byte [SI], "["
+    inc SI
+    mov word [SI], "xy"
+    add SI, 2
+    mov word [SI], "xx"
+    add SI, 2
+    mov word [SI], "yx"
+    add SI, 2
+    mov byte [SI], "]"
+    mov SI, 4
+    m7m:
+    cmp byte[SI], "]"
+    jnz m5mm
+    jz m6m
+
+    m5mm:
+    cmp byte[SI], "y"
+    jz m8m
+    jnz m9m
+    m8m:
+    inc DX
+    inc SI
+    jmp m7m
+    m9m:
+    inc SI
+    jmp m7m
+    m6m:
+ret
+;---[ Конец подпрограммы ]---------------------------------------------------------------------------

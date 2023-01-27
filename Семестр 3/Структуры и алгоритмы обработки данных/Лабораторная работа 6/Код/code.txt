@@ -1,0 +1,4 @@
+a = a > b ? a = a + 1: b = b - 1;
+a = a > b ? a a + 1: b = b - 1;
+int a = a > b ? a = a + 1: b = b - 1;
+int a = b;
