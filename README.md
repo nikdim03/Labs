@@ -4,14 +4,14 @@ This repository contains all of my laboratory works completed during my time at 
 
 ## Contents
 
-- [Semester 1, Year 1](semester1-year1/)
-  - [Programming](semester1-year1/programming/)
-    - [Lab 1](semester1-year1/programming/lab1/)
-    - [Lab 2](semester1-year1/programming/lab2/)
-- [Semester 2, Year 1](semester2-year1/)
-  - [Programming](semester2-year1/programming/)
-    - [Lab 1](semester2-year1/programming/lab1/)
-    - [Lab 2](semester2-year1/programming/lab2/)
+- [Semester 1, Year 1](Семестр%201/)
+  - [Programming](Семестр%201/Программирование/)
+    - [Lab 1](Семестр%201/Программирование/Лабораторная%20работа%201/)
+    - [Lab 2](Семестр%201/Программирование/Лабораторная%20работа%202/)
+- [Semester 2, Year 1](Семестр%202/)
+  - [Programming](Семестр%201/Программирование/)
+    - [Lab 1](Семестр%201/Программирование/Лабораторная%20работа%201/)
+    - [Lab 2](Семестр%201/Программирование/Лабораторная%20работа%202/)
 
 ## How to Use
 
