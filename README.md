@@ -21,6 +21,6 @@ This repository contains all of my laboratory works completed during my time at 
 
 ## Additional Information
 
-All lab works were completed by me as part of my coursework at Moscow State University of Technology "Stankin", Faculty of Information Technology, majoring in Computer Science and Engineering, in the ИДБ-21-03 group.
+All lab works were completed by me as part of my coursework at Moscow State University of Technology "Stankin", Faculty of Information Technology, majoring in Computer Science and Engineering, in ИДБ-21-03 group.
 
 If you have any questions or find any errors, please contact me at nikdim_03@mail.ru.
